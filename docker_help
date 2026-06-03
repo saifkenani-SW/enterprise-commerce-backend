@@ -1,0 +1,8 @@
+# تشغيل
+docker compose up -d
+
+# إيقاف
+docker compose down
+
+# إيقاف مع حذف البيانات
+docker compose down -v
