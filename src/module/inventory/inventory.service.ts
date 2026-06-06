@@ -107,7 +107,12 @@ export class InventoryService {
 
 
 
-
+/**
+ * optimistic lock-based stock decrease
+ * @param inventoryId 
+ * @param quantityToDecrease 
+ * @returns 
+ */
 async decreaseStockOptimistic(
   inventoryId: string,
   quantityToDecrease: number,
