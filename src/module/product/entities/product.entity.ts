@@ -10,6 +10,7 @@ import {
 import { ProductStatus } from '../../../common/enums/product-status.enum';
 import { Inventory } from '../../inventory/entities/inventory.entity';
 import { OrderItem } from '../../order-item/entities/order-item.entity';
+import { CartItem } from 'src/module/cart/entities/cart-item.entity';
 
 @Entity('products')
 export class Product {
@@ -45,4 +46,7 @@ export class Product {
 
   @OneToMany(() => OrderItem, (orderItem) => orderItem.product)
   orderItems!: OrderItem[];
+
+  @OneToMany(() => CartItem, (cartItem) => cartItem.product)
+  cartItems!: CartItem[];
 }

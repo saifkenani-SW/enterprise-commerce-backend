@@ -7,6 +7,8 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Order } from '../../order/entities/order.entity';
+import { CartItem } from 'src/module/cart/entities/cart-item.entity';
+import { Cart } from 'src/module/cart/entities/cart.entity';
 
 @Entity('users')
 export class User {
