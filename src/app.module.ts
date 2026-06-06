@@ -14,7 +14,7 @@ import { OrderItem } from './module/order-item/entities/order-item.entity';
 import { Payment } from './module/payment/entities/payment.entity';
 import { CacheModule } from '@infra/cache';
 import { LockModule } from '@infra/lock';
-import { BullMqModule } from './libs/bullmq';
+import { BullMqModule } from '@infra/bullmq';
 
 @Module({
   imports: [
