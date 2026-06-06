@@ -43,4 +43,14 @@ export class InventoryController {
   remove(@Param('id') id: string): Promise<void> {
     return this.inventoryService.remove(id);
   }
+
+
+
+  @Post(':id/decrease-optimistic')
+decreaseStockOptimistic(
+  @Param('id') id: string,
+  @Body('quantity') quantity: number,
+) {
+  return this.inventoryService.decreaseStockOptimistic(id, quantity);
+}
 }
