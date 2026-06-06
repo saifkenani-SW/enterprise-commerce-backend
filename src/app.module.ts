@@ -13,9 +13,6 @@ import { Order } from './module/order/entities/order.entity';
 import { OrderItem } from './module/order-item/entities/order-item.entity';
 import { Payment } from './module/payment/entities/payment.entity';
 import { CacheModule } from '@infra/cache';
-import { LockModule } from '@infra/lock';
-import { BullMqModule } from './libs/bullmq';
-
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -60,8 +57,6 @@ import { BullMqModule } from './libs/bullmq';
         db: configService.get<number>('REDIS_DB', 0),
       }),
     }),
-    LockModule,
-    BullMqModule.forRootAsync(),
     UserModule,
     ProductModule,
     InventoryModule,

@@ -4,8 +4,6 @@ import { User } from './entities/user.entity';
 import { BullModule } from '@nestjs/bullmq';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
-import { EmailService } from './co';
-import { EmailProcessor } from './pro';
 import { BullBoardModule } from '@bull-board/nestjs';
 import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 
@@ -22,6 +20,6 @@ import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
     }),
   ],
   controllers: [UserController],
-  providers: [UserService, EmailService, EmailProcessor],
+  providers: [UserService],
 })
 export class UserModule {}

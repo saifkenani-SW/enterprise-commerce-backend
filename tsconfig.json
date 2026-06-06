@@ -4,8 +4,8 @@
     "paths": {
       "@infra/cache": ["src/libs/cache/index"],
       "@infra/cache/*": ["src/libs/cache/*"],
-      "@infra/queue": ["src/libs/queue/index"],
-      "@infra/queue/*": ["src/libs/queue/*"],
+      "@infra/bullmq": ["src/libs/bullmq/index"],
+      "@infra/bullmq/*": ["src/libs/bullmq/*"],
       "@infra/lock": ["src/libs/lock/index"],
       "@infra/lock/*": ["src/libs/lock/*"]
     },
