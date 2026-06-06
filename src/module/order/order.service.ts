@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Order } from './entities/order.entity';
@@ -38,8 +42,7 @@ export class OrderService {
         );
       }
 
-      const subtotal =
-        Number(product.price) * itemDto.quantity;
+      const subtotal = Number(product.price) * itemDto.quantity;
       totalAmount += subtotal;
 
       const orderItem = this.orderItemsRepository.create({

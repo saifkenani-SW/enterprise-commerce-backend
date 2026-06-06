@@ -29,7 +29,10 @@ export class PaymentService {
     return payment;
   }
 
-  async update(id: string, updatePaymentDto: UpdatePaymentDto): Promise<Payment> {
+  async update(
+    id: string,
+    updatePaymentDto: UpdatePaymentDto,
+  ): Promise<Payment> {
     const payment = await this.findOne(id);
     Object.assign(payment, updatePaymentDto);
     return this.paymentsRepository.save(payment);
