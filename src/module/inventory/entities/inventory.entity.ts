@@ -15,7 +15,7 @@ export class Inventory {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int', default: 0 })
   quantity!: number;
 
   @VersionColumn()
