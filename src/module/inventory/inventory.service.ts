@@ -48,121 +48,121 @@ export class InventoryService {
     await this.inventoriesRepository.remove(inventory);
   }
 
+  //   async decreaseStockOptimistic(
+  //   inventoryId: string,
+  //   quantityToDecrease: number,
+  // ): Promise<Inventory> {
+  //   const maxRetries = 3;
 
+  //   for (let attempt = 1; attempt <= maxRetries; attempt++) {
+  //     const inventory = await this.inventoriesRepository.findOne({
+  //       where: { id: inventoryId },
+  //     });
 
-//   async decreaseStockOptimistic(
-//   inventoryId: string,
-//   quantityToDecrease: number,
-// ): Promise<Inventory> {
-//   const maxRetries = 3;
+  //     if (!inventory) {
+  //       throw new NotFoundException(`Inventory with ID ${inventoryId} not found`);
+  //     }
 
-//   for (let attempt = 1; attempt <= maxRetries; attempt++) {
-//     const inventory = await this.inventoriesRepository.findOne({
-//       where: { id: inventoryId },
-//     });
+  //     if (inventory.quantity < quantityToDecrease) {
+  //       throw new BadRequestException('Not enough stock available');
+  //     }
 
-//     if (!inventory) {
-//       throw new NotFoundException(`Inventory with ID ${inventoryId} not found`);
-//     }
+  //     const currentVersion = inventory.version;
 
-//     if (inventory.quantity < quantityToDecrease) {
-//       throw new BadRequestException('Not enough stock available');
-//     }
+  //     inventory.quantity -= quantityToDecrease;
 
-//     const currentVersion = inventory.version;
+  //     try {
+  //       await this.inventoriesRepository.manager.transaction(async (manager) => {
+  //         await manager.findOneOrFail(Inventory, {
+  //           where: { id: inventoryId },
+  //           lock: {
+  //             mode: 'optimistic',
+  //             version: currentVersion,
+  //           },
+  //         });
 
-//     inventory.quantity -= quantityToDecrease;
+  //         await manager.save(Inventory, inventory);
+  //       });
 
-//     try {
-//       await this.inventoriesRepository.manager.transaction(async (manager) => {
-//         await manager.findOneOrFail(Inventory, {
-//           where: { id: inventoryId },
-//           lock: {
-//             mode: 'optimistic',
-//             version: currentVersion,
-//           },
-//         });
+  //       return inventory;
+  //     } catch (error) {
+  //       if (error instanceof OptimisticLockVersionMismatchError) {
+  //         if (attempt === maxRetries) {
+  //           throw new ConflictException(
+  //             'Inventory was updated by another request. Please try again.',
+  //           );
+  //         }
 
-//         await manager.save(Inventory, inventory);
-//       });
+  //         continue;
+  //       }
 
-//       return inventory;
-//     } catch (error) {
-//       if (error instanceof OptimisticLockVersionMismatchError) {
-//         if (attempt === maxRetries) {
-//           throw new ConflictException(
-//             'Inventory was updated by another request. Please try again.',
-//           );
-//         }
+  //       throw error;
+  //     }
+  //   }
 
-//         continue;
-//       }
+  //   throw new ConflictException('Could not update inventory safely');
+  // }
 
-//       throw error;
-//     }
-//   }
+  /**
+   * optimistic lock-based stock decrease
+   * @param inventoryId
+   * @param quantityToDecrease
+   * @returns
+   */
+  async decreaseStockOptimistic(
+    inventoryId: string,
+    quantityToDecrease: number,
+  ): Promise<Inventory> {
+    const maxRetries = 3;
 
-//   throw new ConflictException('Could not update inventory safely');
-// }
-
-
-
-/**
- * optimistic lock-based stock decrease
- * @param inventoryId 
- * @param quantityToDecrease 
- * @returns 
- */
-async decreaseStockOptimistic(
-  inventoryId: string,
-  quantityToDecrease: number,
-): Promise<Inventory> {
-  const maxRetries = 3;
-
-  for (let attempt = 1; attempt <= maxRetries; attempt++) {
-    const inventory = await this.inventoriesRepository.findOne({
-      where: { id: inventoryId },
-    });
-
-    if (!inventory) {
-      throw new NotFoundException(`Inventory with ID ${inventoryId} not found`);
-    }
-
-    if (inventory.quantity < quantityToDecrease) {
-      throw new BadRequestException('Not enough stock available');
-    }
-
-    const updateResult = await this.inventoriesRepository
-      .createQueryBuilder()
-      .update(Inventory)
-      .set({
-        quantity: () => `"quantity" - ${quantityToDecrease}`,
-        version: () => `"version" + 1`,
-      })
-      .where('id = :id', { id: inventoryId })
-      .andWhere('version = :version', { version: inventory.version })
-      .andWhere('quantity >= :quantityToDecrease', { quantityToDecrease })
-      .execute();
-
-    if (updateResult.affected && updateResult.affected > 0) {
-      const updatedInventory = await this.inventoriesRepository.findOne({
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      const inventory = await this.inventoriesRepository.findOne({
         where: { id: inventoryId },
       });
 
-      if (!updatedInventory) {
-        throw new NotFoundException(`Inventory with ID ${inventoryId} not found`);
+      if (!inventory) {
+        throw new NotFoundException(
+          `Inventory with ID ${inventoryId} not found`,
+        );
       }
 
-      return updatedInventory;
+      if (inventory.quantity < quantityToDecrease) {
+        throw new BadRequestException('Not enough stock available');
+      }
+
+      const updateResult = await this.inventoriesRepository
+        .createQueryBuilder()
+        .update(Inventory)
+        .set({
+          quantity: () => `"quantity" - ${quantityToDecrease}`,
+          version: () => `"version" + 1`,
+        })
+        .where('id = :id', { id: inventoryId })
+        .andWhere('version = :version', { version: inventory.version })
+        .andWhere('quantity >= :quantityToDecrease', { quantityToDecrease })
+        .execute();
+
+      if (updateResult.affected && updateResult.affected > 0) {
+        const updatedInventory = await this.inventoriesRepository.findOne({
+          where: { id: inventoryId },
+        });
+
+        if (!updatedInventory) {
+          throw new NotFoundException(
+            `Inventory with ID ${inventoryId} not found`,
+          );
+        }
+
+        return updatedInventory;
+      }
+
+      if (attempt === maxRetries) {
+        throw new ConflictException(
+          'Inventory was updated by another request. Please try again.',
+        );
+      }
     }
 
-    if (attempt === maxRetries) {
-      throw new ConflictException(
-        'Inventory was updated by another request. Please try again.',
-      );
-    }
+    throw new ConflictException('Could not update inventory safely');
   }
-
-  throw new ConflictException('Could not update inventory safely');
-}
 }

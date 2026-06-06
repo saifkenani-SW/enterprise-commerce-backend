@@ -4,7 +4,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource,In ,Repository } from 'typeorm';
+import { DataSource, In, Repository } from 'typeorm';
 
 import { Order } from './entities/order.entity';
 import { OrderItem } from '../order-item/entities/order-item.entity';
@@ -32,8 +32,6 @@ export class OrderService {
 
     private dataSource: DataSource,
   ) {}
-
-  
 
   async findAll(): Promise<Order[]> {
     return this.ordersRepository.find();
@@ -63,9 +61,6 @@ export class OrderService {
     await this.ordersRepository.remove(order);
   }
 
-
-
-
   /**
    * ACID Transaction 
    * START TRANSACTION
@@ -80,227 +75,222 @@ export class OrderService {
    * @returns 
    */
 
-//   async create(createOrderDto: CreateOrderDto): Promise<Order> {
-//     if (!createOrderDto.items || createOrderDto.items.length === 0) {
-//       throw new BadRequestException('Order must contain at least one item');
-//     }
+  //   async create(createOrderDto: CreateOrderDto): Promise<Order> {
+  //     if (!createOrderDto.items || createOrderDto.items.length === 0) {
+  //       throw new BadRequestException('Order must contain at least one item');
+  //     }
 
-//     return this.dataSource.transaction(async (manager) => {
+  //     return this.dataSource.transaction(async (manager) => {
 
-//       let totalAmount = 0;
-//       const orderItemsData: OrderItem[] = [];
+  //       let totalAmount = 0;
+  //       const orderItemsData: OrderItem[] = [];
 
-//       for (const itemDto of createOrderDto.items) {
-//         const product = await manager.findOne(Product, {
-//           where: { id: itemDto.productId },
-//         });
+  //       for (const itemDto of createOrderDto.items) {
+  //         const product = await manager.findOne(Product, {
+  //           where: { id: itemDto.productId },
+  //         });
 
-//         if (!product) {
-//           throw new NotFoundException(
-//             `Product with id ${itemDto.productId} not found`,
-//           );
-//         }
+  //         if (!product) {
+  //           throw new NotFoundException(
+  //             `Product with id ${itemDto.productId} not found`,
+  //           );
+  //         }
 
-//         const inventory = await manager.findOne(Inventory, {
-//           where: {
-//             productId: product.id,
-//           },
-//         });
+  //         const inventory = await manager.findOne(Inventory, {
+  //           where: {
+  //             productId: product.id,
+  //           },
+  //         });
 
-//         if (!inventory) {
-//           throw new NotFoundException(
-//             `Inventory for product ${product.id} not found`,
-//           );
-//         }
+  //         if (!inventory) {
+  //           throw new NotFoundException(
+  //             `Inventory for product ${product.id} not found`,
+  //           );
+  //         }
 
-//         if (inventory.quantity < itemDto.quantity) {
-//           throw new BadRequestException(
-//             `Not enough stock for product ${product.name}`,
-//           );
-//         }
+  //         if (inventory.quantity < itemDto.quantity) {
+  //           throw new BadRequestException(
+  //             `Not enough stock for product ${product.name}`,
+  //           );
+  //         }
 
-//         inventory.quantity -= itemDto.quantity;
-//         await manager.save(Inventory, inventory);
+  //         inventory.quantity -= itemDto.quantity;
+  //         await manager.save(Inventory, inventory);
 
-//         const subtotal = Number(product.price) * itemDto.quantity;
-//         totalAmount += subtotal;
+  //         const subtotal = Number(product.price) * itemDto.quantity;
+  //         totalAmount += subtotal;
 
-//         const orderItem = manager.create(OrderItem, {
-//           productId: product.id,
-//           quantity: itemDto.quantity,
-//           unitPrice: product.price,
-//           subtotal,
-//         });
+  //         const orderItem = manager.create(OrderItem, {
+  //           productId: product.id,
+  //           quantity: itemDto.quantity,
+  //           unitPrice: product.price,
+  //           subtotal,
+  //         });
 
-//         orderItemsData.push(orderItem);
-//       }
+  //         orderItemsData.push(orderItem);
+  //       }
 
-//       const order = manager.create(Order, {
-//         userId: createOrderDto.userId,
-//         totalAmount,
-//         status: OrderStatus.PAID,
-//       });
+  //       const order = manager.create(Order, {
+  //         userId: createOrderDto.userId,
+  //         totalAmount,
+  //         status: OrderStatus.PAID,
+  //       });
 
-//       const savedOrder = await manager.save(Order, order);
+  //       const savedOrder = await manager.save(Order, order);
 
-//       for (const item of orderItemsData) {
-//         item.orderId = savedOrder.id;
-//       }
+  //       for (const item of orderItemsData) {
+  //         item.orderId = savedOrder.id;
+  //       }
 
-//       await manager.save(OrderItem, orderItemsData);
+  //       await manager.save(OrderItem, orderItemsData);
 
-//       const payment = manager.create(Payment, {
-//         orderId: savedOrder.id,
-//         amount: totalAmount,
-//         status: PaymentStatus.SUCCESS,
-//         transactionReference: `TXN-${Date.now()}`,
-//       });
+  //       const payment = manager.create(Payment, {
+  //         orderId: savedOrder.id,
+  //         amount: totalAmount,
+  //         status: PaymentStatus.SUCCESS,
+  //         transactionReference: `TXN-${Date.now()}`,
+  //       });
 
-//       await manager.save(Payment, payment);
+  //       await manager.save(Payment, payment);
 
-//       const result = await manager
-//         .getRepository(Order)
-//         .createQueryBuilder('order')
-//         .leftJoinAndSelect('order.items', 'items')
-//         .leftJoinAndSelect('order.payment', 'payment')
-//         .where('order.id = :id', { id: savedOrder.id })
-//         .getOne();
+  //       const result = await manager
+  //         .getRepository(Order)
+  //         .createQueryBuilder('order')
+  //         .leftJoinAndSelect('order.items', 'items')
+  //         .leftJoinAndSelect('order.payment', 'payment')
+  //         .where('order.id = :id', { id: savedOrder.id })
+  //         .getOne();
 
-//       if (!result) {
-//         throw new NotFoundException(`Order with id ${savedOrder.id} not found`);
-//       }
+  //       if (!result) {
+  //         throw new NotFoundException(`Order with id ${savedOrder.id} not found`);
+  //       }
 
-//       return result;
-//     });
-//   }
+  //       return result;
+  //     });
+  //   }
 
+  /**
+   * ACID Transaction + Bottleneck Optimization
+   *
+   * Before:
+   *  - Product query inside loop
+   *  - Inventory query inside loop
+   *
+   * After:
+   *  - Fetch all products once
+   *  - Fetch all inventories once
+   *  - Process order items in memory
+   *
+   * START TRANSACTION
+   *   Fetch Products
+   *   Fetch Inventories
+   *   Create Order
+   *   Create Order Items
+   *   Decrease Inventory
+   *   Create Payment
+   * COMMIT
+   */
+  async create(createOrderDto: CreateOrderDto): Promise<Order> {
+    if (!createOrderDto.items || createOrderDto.items.length === 0) {
+      throw new BadRequestException('Order must contain at least one item');
+    }
 
+    return this.dataSource.transaction(async (manager) => {
+      const productIds = createOrderDto.items.map((item) => item.productId);
 
-
-
-
-/**
- * ACID Transaction + Bottleneck Optimization
- *
- * Before:
- *  - Product query inside loop
- *  - Inventory query inside loop
- *
- * After:
- *  - Fetch all products once
- *  - Fetch all inventories once
- *  - Process order items in memory
- *
- * START TRANSACTION
- *   Fetch Products
- *   Fetch Inventories
- *   Create Order
- *   Create Order Items
- *   Decrease Inventory
- *   Create Payment
- * COMMIT
- */
-async create(createOrderDto: CreateOrderDto): Promise<Order> {
-  if (!createOrderDto.items || createOrderDto.items.length === 0) {
-    throw new BadRequestException('Order must contain at least one item');
-  }
-
-  return this.dataSource.transaction(async (manager) => {
-    const productIds = createOrderDto.items.map((item) => item.productId);
-
-    const products = await manager.find(Product, {
-      where: {
-        id: In(productIds),
-      },
-    });
-
-    const inventories = await manager.find(Inventory, {
-      where: {
-        productId: In(productIds),
-      },
-    });
-
-    let totalAmount = 0;
-    const orderItemsData: OrderItem[] = [];
-
-    for (const itemDto of createOrderDto.items) {
-      const product = products.find((p) => p.id === itemDto.productId);
-
-      if (!product) {
-        throw new NotFoundException(
-          `Product with id ${itemDto.productId} not found`,
-        );
-      }
-
-      const inventory = inventories.find(
-        (inv) => inv.productId === product.id,
-      );
-
-      if (!inventory) {
-        throw new NotFoundException(
-          `Inventory for product ${product.id} not found`,
-        );
-      }
-
-      if (inventory.quantity < itemDto.quantity) {
-        throw new BadRequestException(
-          `Not enough stock for product ${product.name}`,
-        );
-      }
-
-      inventory.quantity -= itemDto.quantity;
-
-      const subtotal = Number(product.price) * itemDto.quantity;
-      totalAmount += subtotal;
-
-      const orderItem = manager.create(OrderItem, {
-        productId: product.id,
-        quantity: itemDto.quantity,
-        unitPrice: product.price,
-        subtotal,
+      const products = await manager.find(Product, {
+        where: {
+          id: In(productIds),
+        },
       });
 
-      orderItemsData.push(orderItem);
-    }
+      const inventories = await manager.find(Inventory, {
+        where: {
+          productId: In(productIds),
+        },
+      });
 
-    await manager.save(Inventory, inventories);
+      let totalAmount = 0;
+      const orderItemsData: OrderItem[] = [];
 
-    const order = manager.create(Order, {
-      userId: createOrderDto.userId,
-      totalAmount,
-      status: OrderStatus.PAID,
+      for (const itemDto of createOrderDto.items) {
+        const product = products.find((p) => p.id === itemDto.productId);
+
+        if (!product) {
+          throw new NotFoundException(
+            `Product with id ${itemDto.productId} not found`,
+          );
+        }
+
+        const inventory = inventories.find(
+          (inv) => inv.productId === product.id,
+        );
+
+        if (!inventory) {
+          throw new NotFoundException(
+            `Inventory for product ${product.id} not found`,
+          );
+        }
+
+        if (inventory.quantity < itemDto.quantity) {
+          throw new BadRequestException(
+            `Not enough stock for product ${product.name}`,
+          );
+        }
+
+        inventory.quantity -= itemDto.quantity;
+
+        const subtotal = Number(product.price) * itemDto.quantity;
+        totalAmount += subtotal;
+
+        const orderItem = manager.create(OrderItem, {
+          productId: product.id,
+          quantity: itemDto.quantity,
+          unitPrice: product.price,
+          subtotal,
+        });
+
+        orderItemsData.push(orderItem);
+      }
+
+      await manager.save(Inventory, inventories);
+
+      const order = manager.create(Order, {
+        userId: createOrderDto.userId,
+        totalAmount,
+        status: OrderStatus.PAID,
+      });
+
+      const savedOrder = await manager.save(Order, order);
+
+      for (const item of orderItemsData) {
+        item.orderId = savedOrder.id;
+      }
+
+      await manager.save(OrderItem, orderItemsData);
+
+      const payment = manager.create(Payment, {
+        orderId: savedOrder.id,
+        amount: totalAmount,
+        status: PaymentStatus.SUCCESS,
+        transactionReference: `TXN-${Date.now()}`,
+      });
+
+      await manager.save(Payment, payment);
+
+      const result = await manager
+        .getRepository(Order)
+        .createQueryBuilder('order')
+        .leftJoinAndSelect('order.items', 'items')
+        .leftJoinAndSelect('order.payment', 'payment')
+        .where('order.id = :id', { id: savedOrder.id })
+        .getOne();
+
+      if (!result) {
+        throw new NotFoundException(`Order with id ${savedOrder.id} not found`);
+      }
+
+      return result;
     });
-
-    const savedOrder = await manager.save(Order, order);
-
-    for (const item of orderItemsData) {
-      item.orderId = savedOrder.id;
-    }
-
-    await manager.save(OrderItem, orderItemsData);
-
-    const payment = manager.create(Payment, {
-      orderId: savedOrder.id,
-      amount: totalAmount,
-      status: PaymentStatus.SUCCESS,
-      transactionReference: `TXN-${Date.now()}`,
-    });
-
-    await manager.save(Payment, payment);
-
-    const result = await manager
-      .getRepository(Order)
-      .createQueryBuilder('order')
-      .leftJoinAndSelect('order.items', 'items')
-      .leftJoinAndSelect('order.payment', 'payment')
-      .where('order.id = :id', { id: savedOrder.id })
-      .getOne();
-
-    if (!result) {
-      throw new NotFoundException(`Order with id ${savedOrder.id} not found`);
-    }
-
-    return result;
-  });
-}
+  }
 }
