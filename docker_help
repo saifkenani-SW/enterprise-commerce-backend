@@ -1,5 +1,6 @@
 # تشغيل
 docker compose up -d
+docker compose up -d postgres redis
 
 # إيقاف
 docker compose down
