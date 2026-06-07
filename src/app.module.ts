@@ -15,6 +15,10 @@ import { Payment } from './module/payment/entities/payment.entity';
 import { CacheModule } from '@infra/cache';
 import { LockModule } from '@infra/lock';
 import { BullMqModule } from './libs/bullmq';
+import { EmailModule } from './module/email/email.module';
+import { NotificationLog } from './module/notification/entities/notification-log.entity';
+import { NotificationModule } from './module/notification/notification.module';
+import { JobsModule } from './jobs/jobs.module';
 
 @Module({
   imports: [
@@ -36,7 +40,15 @@ import { BullMqModule } from './libs/bullmq';
           'DB_DATABASE',
           'parallel_programming',
         ),
-        entities: [User, Product, Inventory, Order, OrderItem, Payment],
+        entities: [
+          User,
+          Product,
+          Inventory,
+          Order,
+          OrderItem,
+          Payment,
+          NotificationLog,
+        ],
         synchronize: configService.get<string>('NODE_ENV') !== 'production', // خطير في الإنتاج!
         logging: configService.get<string>('NODE_ENV') === 'development',
         // إعدادات إضافية مفيدة
@@ -67,6 +79,9 @@ import { BullMqModule } from './libs/bullmq';
     InventoryModule,
     OrderModule,
     PaymentModule,
+    EmailModule,
+    JobsModule,
+    NotificationModule,
   ],
 })
 export class AppModule {}
