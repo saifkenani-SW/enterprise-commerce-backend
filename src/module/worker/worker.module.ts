@@ -1,21 +1,22 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Order } from './entities/order.entity';
+
+import { OrderWorker } from './order.processor';
+import { Order } from '../order/entities/order.entity';
 import { OrderItem } from '../order-item/entities/order-item.entity';
+import { Inventory } from '../inventory/entities/inventory.entity';
 import { Product } from '../product/entities/product.entity';
-import { OrderService } from './order.service';
-import { OrderController } from './order.controller';
 import { BullModule } from '@nestjs/bullmq';
 import { QUEUES } from 'src/libs/bullmq/constants/queues';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Order, OrderItem, Product]),
-  BullModule.registerQueue({
+    TypeOrmModule.forFeature([Order, OrderItem, Product, Inventory]),
+    BullModule.registerQueue({
       name: QUEUES.ORDER,
-    }),],
-  controllers: [OrderController],
-  providers: [OrderService],
-  exports: [OrderService],
+    }),
+  ],
+
+  providers: [OrderWorker],
 })
-export class OrderModule {}
+export class WorkerModule {}

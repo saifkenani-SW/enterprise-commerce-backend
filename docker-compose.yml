@@ -8,20 +8,67 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: parallel_programming
     ports:
-      - "5432:5432"
+      - '5433:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
+    networks:
+      - backend
+  
   redis:
     image: redis:7
     container_name: parallel_programming_clean_redis_cache
     restart: unless-stopped
     command: redis-server --appendonly yes
     ports:
-      - "6379:6379"
+      - '6380:6379'
     volumes:
       - redis_data:/data
+    networks:
+      - backend
+
+
+
+#  # تطبيق NestJS الأول
+#  app1:
+#    build: .
+#    container_name: nest_app_instance_1
+#    restart: unless-stopped
+#    ports:
+#      - "3001:3000"
+#    environment:
+#      DB_HOST: postgres
+#      DB_PORT: 5432
+#      REDIS_HOST: redis
+#      REDIS_PORT: 6379
+#    depends_on:
+#      - postgres
+#      - redis
+#    networks:
+#      - backend
+#
+#  # تطبيق NestJS الثاني
+#  app2:
+#    build: .
+#    container_name: nest_app_instance_2
+#    restart: unless-stopped
+#    ports:
+#      - "3002:3000"
+#    environment:
+#      DB_HOST: postgres
+#      DB_PORT: 5432
+#      REDIS_HOST: redis
+#      REDIS_PORT: 6379
+#    depends_on:
+#      - postgres
+#      - redis
+#    networks:
+#      - backend
 
 volumes:
   postgres_data:
   redis_data:
+
+networks:
+  backend:
+    driver: bridge
+    name: enterprise_commerce_backend
