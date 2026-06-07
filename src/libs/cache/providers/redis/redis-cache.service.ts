@@ -50,4 +50,7 @@ export class RedisCacheService implements ICache, OnModuleInit {
 
     console.log(`Cache Connected: ${pong}`);
   }
+  async eval(script: string, numKeys: number, ...args: string[]) {
+    return await this.redis.eval(script, numKeys, ...args);
+  }
 }

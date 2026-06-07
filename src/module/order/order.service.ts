@@ -211,8 +211,8 @@ export class OrderService {
       const order = await this.createOrderInternal(createOrderDto);
 
       // ✅ إرسال إيميل + إبطال الكاش بعد إنشاء الطلب
-      await this.sendOrderConfirmationEmail(order);
-      await this.invalidateListCache();
+     // await this.sendOrderConfirmationEmail(order);
+      //await this.invalidateListCache();
 
       return order;
     } finally {

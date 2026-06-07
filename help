@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Build
+npm run build
+
+# Start Cluster Mode
+pm2 start dist/main.js \
+  --name recall-api \
+  -i max
+
+# Save configuration
+pm2 save
+
+# Show processes
+pm2 list
+
+# Live monitoring (CPU / Memory)
+pm2 monit
+
+
+docker compose exec postgres psql -U postgres -d parallel_programming

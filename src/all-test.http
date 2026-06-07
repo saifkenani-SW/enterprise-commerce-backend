@@ -30,7 +30,7 @@ Content-Type: application/json
 "items": [
 {
 "productId": "503bbabb-ac09-42ee-8bfc-1e0f42fd8f46",
-"quantity": 0
+"quantity": 1000000000000
 },
 {
 "productId": "94ab5abb-feff-4581-a17b-61981813959f",
@@ -42,3 +42,28 @@ Content-Type: application/json
 }
 ]
 }
+
+
+###
+### تسجيل دخول
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "123"
+}
+
+### Response:
+#{
+#  "access_token": "eyJhbGciOiJIUzI1NiIs...",
+#  "user": {
+#    "id": "...",
+#    "email": "admin@example.com",
+#    "fullName": "Admin User"
+#  }
+#}
+
+### استخدام التوكن
+GET http://localhost:3000/orders
+Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
