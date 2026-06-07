@@ -2,16 +2,12 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      // حزمة الكاش
-      "@core/cache": ["src/libs/cache/index"],
-      "@core/cache/*": ["src/libs/cache/*"],
-
-      // حزمة اللوجر
-      "@core/logger": ["src/libs/logger/index"],
-      "@core/logger/*": ["src/libs/logger/*"],
-
-      // اختصار اختياري لمجلد الموديولات لسهولة الاستيراد الداخلي
-      "@modules/*": ["src/modules/*"]
+      "@infra/cache": ["src/libs/cache/index"],
+      "@infra/cache/*": ["src/libs/cache/*"],
+      "@infra/queue": ["src/libs/queue/index"],
+      "@infra/queue/*": ["src/libs/queue/*"],
+      "@infra/lock": ["src/libs/lock/index"],
+      "@infra/lock/*": ["src/libs/lock/*"]
     },
 
     "module": "nodenext",
