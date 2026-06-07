@@ -20,7 +20,7 @@ import { BullMqModule } from './libs/bullmq';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env',
+      envFilePath: '.env.example',
     }),
 
     TypeOrmModule.forRootAsync({
