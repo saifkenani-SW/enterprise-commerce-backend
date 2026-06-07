@@ -1,46 +1,54 @@
 import {
-  Controller,
-  Get,
-  Post,
-  Patch,
-  Delete,
-  Param,
   Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { Order } from './entities/order.entity';
+import { OrderStatus } from '../../common/enums/order-status.enum';
 
 @Controller('orders')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Post()
-  create(@Body() createOrderDto: CreateOrderDto): Promise<Order> {
+  create(@Body() createOrderDto: CreateOrderDto) {
     return this.orderService.create(createOrderDto);
   }
 
   @Get()
-  findAll(): Promise<Order[]> {
-    return this.orderService.findAll();
+  findAll(
+    @Query('page') page?: number,
+    @Query('limit') limit?: number,
+    @Query('status') status?: OrderStatus,
+    @Query('userId') userId?: string,
+  ) {
+    return this.orderService.findAll(page || 1, limit || 20, status, userId);
+  }
+
+  @Get('stats')
+  getStats() {
+    return this.orderService.getStats();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Order> {
+  findOne(@Param('id') id: string) {
     return this.orderService.findOne(id);
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateOrderDto: UpdateOrderDto,
-  ): Promise<Order> {
+  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
     return this.orderService.update(id, updateOrderDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<void> {
+  remove(@Param('id') id: string) {
     return this.orderService.remove(id);
   }
 }
