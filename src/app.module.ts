@@ -19,6 +19,11 @@ import { EmailModule } from './module/email/email.module';
 import { NotificationLog } from './module/notification/entities/notification-log.entity';
 import { NotificationModule } from './module/notification/notification.module';
 import { JobsModule } from './jobs/jobs.module';
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { TransformInterceptor } from './core/interceptor/interceptorResponse';
+import { GlobalExceptionFilter } from './core/filters/global-exception.filter';
+import { AuthModule } from './module/auth/auth.module';
+import { JwtAuthGuard } from './module/auth/auth.guard';
 
 @Module({
   imports: [
@@ -82,6 +87,21 @@ import { JobsModule } from './jobs/jobs.module';
     EmailModule,
     JobsModule,
     NotificationModule,
+    AuthModule,
+  ],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: TransformInterceptor,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: GlobalExceptionFilter,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
   ],
 })
 export class AppModule {}
