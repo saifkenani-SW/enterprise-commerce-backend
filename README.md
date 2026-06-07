@@ -1,98 +1,272 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Enterprise Commerce Backend 🚀
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This is a robust, scalable backend system built with **NestJS**, following **Clean Architecture** principles and **Domain-Driven Design (DDD)** concepts.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🛠 Tech Stack & Infrastructure
 
-## Description
+* **Framework:** NestJS
+* **Database:** PostgreSQL (via TypeORM)
+* **Caching:** Redis
+* **Distributed Locks:** Redis
+* **Message Queues:** BullMQ (Backed by Redis)
+* **Containerization:** Docker & Docker Compose
+* **ORM:** TypeORM
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+---
 
-## Project setup
+## 🚦 Prerequisites
 
-```bash
-$ npm install
-```
+Before you begin, ensure you have the following installed on your machine:
 
-## Compile and run the project
+* [Node.js](https://nodejs.org/) (v18 or higher)
+* [Docker](https://www.docker.com/)
+* Docker Compose V2
+* Git
 
-```bash
-# development
-$ npm run start
+---
 
-# watch mode
-$ npm run start:dev
+# 🚀 Getting Started (Local Development)
 
-# production mode
-$ npm run start:prod
-```
+Follow these steps to set up and run the project locally.
 
-## Run tests
+> ⚠️ **IMPORTANT**
+>
+> You **MUST** start the Docker infrastructure (Step 3) before running the NestJS application.
+>
+> The application depends on PostgreSQL and Redis during startup and will fail to boot if they are unavailable.
+
+---
+
+## 1. Clone the Repository
+
+You can clone the repository using either HTTPS or SSH.
+
+### Via HTTPS
 
 ```bash
-# unit tests
-$ npm run test
+git clone https://github.com/saifkenani-SW/enterprise-commerce-backend.git
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+cd enterprise-commerce-backend
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### Via SSH
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+git clone git@github.com:saifkenani-SW/enterprise-commerce-backend.git
+
+cd enterprise-commerce-backend
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+---
 
-## Resources
+## 2. Environment Setup
 
-Check out a few resources that may come in handy when working with NestJS:
+Create your local environment file:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+```bash
+cp .env.example .env
+```
 
-## Support
+Example `.env`:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```env
+NODE_ENV=development
+PORT=3000
 
-## Stay in touch
+DB_HOST=localhost
+DB_PORT=5433
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
+DB_DATABASE=parallel_programming
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+REDIS_HOST=localhost
+REDIS_PORT=6380
+REDIS_PASSWORD=
+REDIS_DB=0
 
-## License
+REDIS_QUEUE_DB=1
+```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+> ⚠️ Never commit real credentials to Git.
+
+---
+
+## 3. Start Infrastructure (Required)
+
+Start PostgreSQL and Redis containers:
+
+```bash
+docker compose up -d
+```
+
+Verify containers are running:
+
+```bash
+docker ps
+```
+
+Expected services:
+
+* PostgreSQL
+* Redis
+
+---
+
+## 4. Install Dependencies
+
+```bash
+npm install
+```
+
+---
+
+## 5. Start the Application
+
+Run the NestJS application in development mode:
+
+```bash
+npm run start:dev
+```
+
+If everything is configured correctly, you should see:
+
+```text
+Cache Connected: PONG
+Lock Connected: PONG
+Nest application successfully started
+Application is running on: http://localhost:3000
+```
+
+---
+
+# 🐳 Docker Infrastructure
+
+The project ships with Docker Compose for local infrastructure.
+
+Services:
+
+| Service    | Port |
+| ---------- | ---- |
+| PostgreSQL | 5433 |
+| Redis      | 6380 |
+
+Start:
+
+```bash
+docker compose up -d
+```
+
+Stop:
+
+```bash
+docker compose down
+```
+
+Remove volumes:
+
+```bash
+docker compose down -v
+```
+
+---
+
+# 🔐 Redis Features
+
+This project includes:
+
+* Cache abstraction layer
+* Distributed locking
+* BullMQ queue backend
+* Dedicated Redis database for queues
+
+---
+
+# 📬 BullMQ Queues
+
+BullMQ is used for background processing.
+
+Features:
+
+* Job retries
+* Backoff strategies
+* Dead Letter Queue (DLQ)
+* Bull Board dashboard
+* Redis-backed workers
+
+---
+
+# 📊 Queue Dashboard
+
+Bull Board dashboard is available at:
+
+```text
+http://localhost:3000/admin/queues
+```
+
+Use it to:
+
+* Monitor jobs
+* Retry failed jobs
+* Inspect queue status
+* View completed jobs
+
+---
+
+# 🏗 Project Structure
+
+```text
+src/
+├── libs/
+│   ├── cache/
+│   ├── lock/
+│   └── bullmq/
+│
+├── module/
+│   ├── user/
+│   ├── product/
+│   ├── inventory/
+│   ├── order/
+│   └── payment/
+│
+└── app.module.ts
+```
+
+---
+
+# 🧪 Development Commands
+
+Run application:
+
+```bash
+npm run start:dev
+```
+
+Build project:
+
+```bash
+npm run build
+```
+
+Run production build:
+
+```bash
+npm run start:prod
+```
+
+Run linter:
+
+```bash
+npm run lint
+```
+
+Format code:
+
+```bash
+npm run format
+```
+
+---
+
+# 📄 License
+
+This project is licensed under the MIT License.
