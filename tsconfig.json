@@ -4,10 +4,10 @@
     "paths": {
       "@infra/cache": ["src/libs/cache/index"],
       "@infra/cache/*": ["src/libs/cache/*"],
-      "@infra/queue": ["src/libs/queue/index"],
-      "@infra/queue/*": ["src/libs/queue/*"],
       "@infra/lock": ["src/libs/lock/index"],
-      "@infra/lock/*": ["src/libs/lock/*"]
+      "@infra/lock/*": ["src/libs/lock/*"],
+      "@infra/queue": ["src/libs/queue/index"],
+      "@infra/queue/*": ["src/libs/queue/*"]
     },
 
     "module": "nodenext",

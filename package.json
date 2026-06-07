@@ -18,7 +18,11 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "seed:faker": "ts-node src/seeds/seed.ts"
+    "seed": "ts-node src/seeds/simple-seed.ts",
+    "seed:faker": "ts-node -r tsconfig-paths/register src/seeds/seed.ts",
+    "seed:full": "ts-node -r tsconfig-paths/register src/seeds/full-seed.ts",
+    "seed:users": "ts-node -r tsconfig-paths/register src/seeds/large-users.seed.ts",
+    "seed:users:fast": "ts-node -r tsconfig-paths/register src/seeds/large-users-insert.seed.ts"
   },
   "dependencies": {
     "@bull-board/api": "^7.1.5",
@@ -30,11 +34,13 @@
     "@nestjs/core": "^11.0.1",
     "@nestjs/mapped-types": "^2.1.1",
     "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/schedule": "^6.1.3",
     "@nestjs/typeorm": "^11.0.1",
     "bcrypt": "^6.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
     "ioredis": "^5.11.1",
+    "nodemailer": "^8.0.7",
     "pg": "^8.21.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
