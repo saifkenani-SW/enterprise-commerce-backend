@@ -16,4 +16,11 @@ export interface ILock {
     ttlMs: number,
     callback: () => Promise<T>,
   ): Promise<T>;
+
+  executeWithWait<T>(
+    key: string,
+    ttlMs: number,
+    options: LockWaitOptions,
+    callback: () => Promise<T>,
+  ): Promise<T>;
 }

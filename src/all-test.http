@@ -1,0 +1,44 @@
+### ============================================
+### 📢 NOTIFICATIONS - BATCH
+### ============================================
+
+### إرسال إشعارات لكل المستخدمين (يضيف للـ Queue ويرجع فوراً)
+POST http://localhost:3000/notifications/send
+Content-Type: application/json
+
+{
+  "title": "🎉 عرض خاص",
+  "message": "مرحباً {name}! خصم 50% اليوم!"
+}
+###
+### إرسال إشعار لمشتري منتج معين
+POST http://localhost:3000/notifications/send/product
+Content-Type: application/json
+
+{
+  "productId": "503bbabb-ac09-42ee-8bfc-1e0f42fd8f46",
+  "title": "🎁 عرض للمشترين",
+  "message": "مرحباً {name}! شكراً لشرائك منتجنا!"
+}
+
+###
+POST http://localhost:3000/orders
+Content-Type: application/json
+
+{
+"userId": "262b65d0-18a8-4a6c-8fc1-3f7ca61b149b",
+"items": [
+{
+"productId": "503bbabb-ac09-42ee-8bfc-1e0f42fd8f46",
+"quantity": 0
+},
+{
+"productId": "94ab5abb-feff-4581-a17b-61981813959f",
+"quantity": 3
+},
+{
+"productId": "cf73fc85-1c4f-4f13-8a3b-f9c4167d8e80",
+"quantity": 0
+}
+]
+}
